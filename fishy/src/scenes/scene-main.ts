@@ -19,7 +19,7 @@ export class SceneMain extends Scene {
     }
 
     private async updateSpawns() {
-        if (this._timer < 100) {
+        if (this._timer < 50) {
             this._timer++;
             return;
         }

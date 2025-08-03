@@ -20,9 +20,9 @@ export class ActorFish extends Actor {
     constructor() {
         super("fish", Assets.getModel("fish").clone(true));
 
-        this._size = 1 + Math.random() * 10;
+        this._size = 1 + Math.random() * 20;
         this._dir = Math.random() * 100 > 50 ? 0 : 1;
-        this._speed = 5 + Math.random() * 5;
+        this._speed = 5 + Math.random() * 20;
 
         if (this._dir == 0) {
             this.position.x = -100;
