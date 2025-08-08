@@ -1,4 +1,5 @@
 import { Actor, Assets, Scenes } from "lunanore";
+import { GameController } from "../game-controller";
 
 export class ActorFish extends Actor {
     private _dir: number;
@@ -13,7 +14,7 @@ export class ActorFish extends Actor {
         return this._size;
     }
 
-    public get speed(): number { 
+    public get speed(): number {
         return this._speed;
     }
 
@@ -36,6 +37,10 @@ export class ActorFish extends Actor {
     }
 
     public async update(dt: number) {
+        if (GameController.paused) {
+            return;
+        }
+
         if (this._dir == 0) {
             this.position.x += this._speed * dt;
         } else {

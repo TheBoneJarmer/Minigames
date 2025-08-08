@@ -20,6 +20,10 @@ export class ActorPlayer extends Actor {
     }
 
     public async update(dt: number) {
+        if (GameController.paused) {
+            return;
+        }
+
         await this.updateInput(dt);
         await this.updateMovement(dt);
         await this.updateSize();
@@ -46,9 +50,11 @@ export class ActorPlayer extends Actor {
 
             if (collide) {
                 if (fish.size < this.size) {
+                    const diff = this.size - fish.size;
+                    this.size += diff / 4;
+
                     scene.remove(fish);
-                    this.size++;
-                    GameController.score++;
+                    GameController.score += Math.round(diff);
                 } else {
                     scene.remove(this);
                     GameController.reset();
@@ -91,9 +97,9 @@ export class ActorPlayer extends Actor {
         this.position.y += this.velocity.y;
         this.velocity = this.velocity.clamp(minVelocity, maxVelocity);
 
-        if (this.position.x < -45) this.position.x = -45;
-        if (this.position.x > 45) this.position.x = 45;
-        if (this.position.y < -35) this.position.y = -35;
-        if (this.position.y > 35) this.position.y = 35;
+        if (this.position.x < -90) this.position.x = -90;
+        if (this.position.x > 90) this.position.x = 50;
+        if (this.position.y < -40) this.position.y = -40;
+        if (this.position.y > 40) this.position.y = 40;
     }
 }

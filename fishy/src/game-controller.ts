@@ -6,6 +6,7 @@ import { GameUI } from "./game-ui";
 export class GameController {
     private static _timer: number = 100;
 
+    public static paused: boolean = false;
     public static score: number = 0;
 
     public static async reset() {
@@ -20,6 +21,13 @@ export class GameController {
     }
 
     public static async update(dt: number) {
+        if (this.paused) {
+            GameUI.showStatus("[Paused]");
+            return;
+        } else {
+            GameUI.hideStatus();
+        }
+
         const scene = Scenes.scene;
 
         await this.updateSpawns(scene);
@@ -31,7 +39,7 @@ export class GameController {
     }
 
     private static async updateSpawns(scene: Scene) {
-        if (this._timer < 100) {
+        if (this._timer < 50) {
             this._timer++;
             return;
         }

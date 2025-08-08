@@ -1,6 +1,7 @@
 import * as THREE from "three";
-import { Scene } from "lunanore";
+import { Keyboard, Scene } from "lunanore";
 import { GameController } from "../game-controller";
+import { Keys } from "lunanore/enums";
 
 export class SceneMain extends Scene {
     public async init() {
@@ -11,6 +12,10 @@ export class SceneMain extends Scene {
     }
 
     public async update(dt: number) {
+        if (Keyboard.keyPressed(Keys.P)) {
+            GameController.paused = !GameController.paused;
+        }
+
         await GameController.update(dt);
     }
 }
