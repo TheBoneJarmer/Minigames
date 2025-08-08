@@ -30,20 +30,29 @@ export class ActorPlayer extends Actor {
         const fishes = scene.actors.filter(x => x.tag == "fish") as ActorFish[];
 
         for (let fish of fishes) {
-            const dist = fish.position.distanceTo(this.position);
-            const distMin = fish.size / 2 + this.size / 2;
+            let collide = false;
 
-            if (dist > distMin) {
-                continue;
+            const v1 = new THREE.Vector2(this.position.x, 0);
+            const v2 = new THREE.Vector2(0, this.position.y);
+            const v3 = new THREE.Vector2(fish.position.x, 0);
+            const v4 = new THREE.Vector2(0, fish.position.y);
+
+            const check1 = v1.distanceTo(v3) < this.size / 2 + fish.size / 2;
+            const check2 = v2.distanceTo(v4) < this.size / 4 + fish.size / 4;
+
+            if (check1 && check2) {
+                collide = true;
             }
 
-            if (fish.size < this.size) {
-                scene.remove(fish);
-                this.size++;
-                GameController.score++;
-            } else {
-                scene.remove(this);
-                GameController.reset();
+            if (collide) {
+                if (fish.size < this.size) {
+                    scene.remove(fish);
+                    this.size++;
+                    GameController.score++;
+                } else {
+                    scene.remove(this);
+                    GameController.reset();
+                }
             }
         }
 
