@@ -1,8 +1,9 @@
 import * as THREE from "three";
-import { Actor, Assets, Keyboard, Scenes } from "lunanore";
+import { Actor, Assets, Keyboard, Scenes, Joystick } from "lunanore";
 import { Keys } from "lunanore/enums";
 import { MeshStandardMaterial } from "three";
 import { ActorFish } from "./actor-fish";
+import { GameController } from "../game-controller";
 
 export class ActorPlayer extends Actor {
     public size: number;
@@ -39,8 +40,10 @@ export class ActorPlayer extends Actor {
             if (fish.size < this.size) {
                 scene.remove(fish);
                 this.size++;
+                GameController.score++;
             } else {
                 scene.remove(this);
+                GameController.reset();
             }
         }
 
@@ -48,29 +51,40 @@ export class ActorPlayer extends Actor {
     }
 
     private async updateInput(dt: number) {
-        if (Keyboard.keyDown(Keys.Left)) {
-            this.velocity.x -= dt;
-        }
+        if (Joystick.isConnected(0)) {
+            this.velocity.x += Joystick.getAxis(0, 0) * 0.1;
+            this.velocity.y -= Joystick.getAxis(0, 1) * 0.1;
+        } else {
+            if (Keyboard.keyDown(Keys.Left)) {
+                this.velocity.x -= dt;
+            }
 
-        if (Keyboard.keyDown(Keys.Right)) {
-            this.velocity.x += dt;
-        }
+            if (Keyboard.keyDown(Keys.Right)) {
+                this.velocity.x += dt;
+            }
 
-        if (Keyboard.keyDown(Keys.Up)) {
-            this.velocity.y += dt;
-        }
+            if (Keyboard.keyDown(Keys.Up)) {
+                this.velocity.y += dt;
+            }
 
-        if (Keyboard.keyDown(Keys.Down)) {
-            this.velocity.y -= dt;
+            if (Keyboard.keyDown(Keys.Down)) {
+                this.velocity.y -= dt;
+            }
         }
     }
 
     private async updateMovement(dt: number) {
-        const minVelocity = new THREE.Vector2(-30 * dt, -30 * dt);
-        const maxVelocity = new THREE.Vector2(30 * dt, 30 * dt);
+        const speed = 20;
+        const minVelocity = new THREE.Vector2(-speed * dt, -speed * dt);
+        const maxVelocity = new THREE.Vector2(speed * dt, speed * dt);
 
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         this.velocity = this.velocity.clamp(minVelocity, maxVelocity);
+
+        if (this.position.x < -45) this.position.x = -45;
+        if (this.position.x > 45) this.position.x = 45;
+        if (this.position.y < -35) this.position.y = -35;
+        if (this.position.y > 35) this.position.y = 35;
     }
 }

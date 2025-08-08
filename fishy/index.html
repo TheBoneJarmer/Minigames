@@ -13,7 +13,7 @@
             padding: 0;
 
             font-family: Verdana, Geneva, Tahoma, sans-serif;
-            font-size: 14pt;
+            font-size: 16pt;
             color: #fff;
         }
 
@@ -41,6 +41,13 @@
             text-align: center;
             text-transform: uppercase;
         }
+
+        #score {
+            display: none;
+            position: absolute;
+            left: 32px;
+            top: 32px;
+        }
     </style>
 </head>
 
@@ -49,6 +56,7 @@
 
     <!-- UI -->
     <div id="status"></div>
+    <div id="score"></div>
 
     <!-- Scripts -->
     <script src="src/game.ts" type="module"></script>
