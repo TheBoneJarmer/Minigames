@@ -51,7 +51,7 @@ export class ActorPlayer extends Actor {
             if (collide) {
                 if (fish.size < this.size) {
                     const diff = this.size - fish.size;
-                    this.size += diff / 4;
+                    this.size += 0.1;
 
                     scene.remove(fish);
                     GameController.score += Math.round(diff);
