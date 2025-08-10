@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "dependencies": {
-    "lunanore": "^0.5.0"
+    "lunanore": "^0.6.1"
   },
   "devDependencies": {
     "vite": "^7.0.6"
